@@ -30,11 +30,39 @@ class Board:
             return "Missed"
     
     def add_ship(self, x, y, type="computer"):
+        """
+        Adding ships
+        """
         if len(self.ships) >= self.num_ships:
             print("Error: You cannot add anymore ships!")
         else:
             self.ships.append((x, y))
             if self.type == "player":
                 self.board[x][y] = "@"
-                
-        
+
+def random_point(size):
+    """
+    Returning a random integer 
+    """
+    return randint(0, size -1)
+
+class Player:
+    """
+    Represents a player in the game
+    """
+    def __init__(self, name):
+        self.name = name
+        self.board = Board()
+        self.board.name = self.name
+        self.board.type = "player"
+
+
+class Computer:
+    """
+    Represents the computer opponent in the game
+    """
+    def __init__(self):
+        self.name = "Computer"
+        self.board = Board()
+        self.board.name = self.name
+        self.board.type = "computer"
