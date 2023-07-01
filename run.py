@@ -1,40 +1,40 @@
 from random import randint
 
-scores = {"computer": 0, "player" : 0}
+scores = {"computer": 0, "player": 0}
 
 class Board:
     """
     Creates the game board
     """
-    def create_board(self, size, num_ships, name, type):
+    def __init__(self, size):
         self.size = size
-        self.board = [["." for x in range(size)] for y in range(size)] 
-        self.num_ships = num_ships
-        self.name = name
-        self.type = type
+        self.board = [["." for _ in range(size)] for _ in range(size)]
+        self.num_ships = 0
+        self.name = ""
+        self.type = ""
         self.guesses = []
         self.ships = []
-    
+
     def print(self):
         for row in self.board:
             print(" ".join(row))
-    
+
     def guess(self, x, y):
         self.guesses.append((x, y))
         self.board[x][y] = "X"
 
-        if (x,y) in self.ships:
+        if (x, y) in self.ships:
             self.board[x][y] = "*"
             return "Hit"
         else:
             return "Missed"
-    
+
     def add_ship(self, x, y, type="computer"):
         """
         Adding ships
         """
         if len(self.ships) >= self.num_ships:
-            print("Error: You cannot add anymore ships!")
+            print("Error: You cannot add any more ships!")
         else:
             self.ships.append((x, y))
             if self.type == "player":
@@ -42,9 +42,10 @@ class Board:
 
 def random_point(size):
     """
-    Returning a random integer 
+    Returning a random integer
     """
-    return randint(0, size -1)
+    return randint(0, size - 1)
+
 
 class Player:
     """
@@ -52,9 +53,10 @@ class Player:
     """
     def __init__(self, name):
         self.name = name
-        self.board = Board()
+        self.board = Board(5)
         self.board.name = self.name
         self.board.type = "player"
+        self.board.num_ships = 3
 
 
 class Computer:
@@ -63,9 +65,11 @@ class Computer:
     """
     def __init__(self):
         self.name = "Computer"
-        self.board = Board()
+        self.board = Board(5)
         self.board.name = self.name
         self.board.type = "computer"
+        self.board.num_ships = 3
+
 
 def get_valid_input():
     """
@@ -80,23 +84,24 @@ def get_valid_input():
             else:
                 print("Invalid input! Please enter values within the range (0-4).")
         except ValueError:
-            print("Invalid input! Please enter valid numbers for row and column.")
+            print("Invalid input! Please enter valid integers for row and column.")
+
 
 def play_game():
     """
-    Starts the game
+    Plays a game of Battleship
     """
     print("Welcome to Battleship!")
     player_name = input("Please enter your name: ")
 
-    """ 
-    Create player and computer objects 
+    """
+    Create player and computer objects
     """
 
     player = Player(player_name)
     computer = Computer()
 
-    """
+    """ 
     Set up player's ships
     """
 
@@ -107,19 +112,58 @@ def play_game():
         player.board.add_ship(x, y)
 
     """
-    Set up computers's ships
+    Set up computer's ships
     """
+
     print("\nSetting up computer's ships.")
     for _ in range(computer.board.num_ships):
         x = random_point(computer.board.size)
         y = random_point(computer.board.size)
         computer.board.add_ship(x, y)
 
+    """
+    Starts the game 
+    """
     
     game_over = False
     while not game_over:
         print("\nPlayer's turn")
+        print("Player's Board:")
         player.board.print()
+        print("Computer's Board:")
+        computer.board.print()
+
         print("Make a guess.")
         x, y = get_valid_input()
-        result = player.board.guess
+        result = player.board.guess(x, y)
+        print(result)
+
+        if result == "Hit":
+            if len(player.board.ships) == 0:
+                print("Congratulations! You sank all the computer's ships. You win!")
+                scores["player"] += 1
+                game_over = True
+        else:
+            print("Player missed.")
+
+        print("\nComputer's turn")
+        x = random_point(computer.board.size)
+        y = random_point(computer.board.size)
+        result = computer.board.guess(x, y)
+        print("The computer guesses ({}, {}).".format(x, y))
+        print(result)
+
+        if result == "Hit":
+            if len(computer.board.ships) == 0:
+                print("Oops! The computer sank all your ships. You lose!")
+                scores["computer"] += 1
+                game_over = True
+        else:
+            print("The computer missed.")
+
+    print("\nGame Over!")
+    print("Player Score:", scores["player"])
+    print("Computer Score:", scores["computer"])
+
+
+play_game()
