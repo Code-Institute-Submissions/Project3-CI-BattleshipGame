@@ -21,12 +21,12 @@ class Board:
 
     def guess(self, x, y):
         self.guesses.append((x, y))
-        self.board[x][y] = "X"
-
         if (x, y) in self.ships:
-            self.board[x][y] = "*"
+            self.board[x][y] = "@"
+            self.ships.remove((x, y))
             return "Hit"
         else:
+            self.board[x][y] = "*"
             return "Missed"
 
     def add_ship(self, x, y, type="computer"):
@@ -38,7 +38,7 @@ class Board:
         else:
             self.ships.append((x, y))
             if self.type == "player":
-                self.board[x][y] = "@"
+                self.board[x][y] = "$"
 
 def random_point(size):
     """
@@ -84,27 +84,27 @@ def get_valid_input():
             else:
                 print("Invalid input! Please enter values within the range (0-4).")
         except ValueError:
-            print("Invalid input! Please enter valid integers for row and column.")
-
+            print("Invalid input! Please enter valid numbers for row and column.")
 
 def play_game():
     """
-    Plays a game of Battleship
+    Starts the game
     """
     print("Welcome to Battleship!")
     player_name = input("Please enter your name: ")
 
     """ 
-    Create player and computer objects
+    Create player and computer objects 
     """
+
     player = Player(player_name)
     computer = Computer()
 
     """
     Set up player's ships
     """
-    
-    print("\nSet up your ships.")
+
+    print("\nSet up your ships, {}.".format(player_name))
     for _ in range(player.board.num_ships):
         print("Enter the coordinates for ship {}".format(_ + 1))
         x, y = get_valid_input()
@@ -113,56 +113,48 @@ def play_game():
     """
     Set up computer's ships
     """
-
     print("\nSetting up computer's ships.")
     for _ in range(computer.board.num_ships):
         x = random_point(computer.board.size)
         y = random_point(computer.board.size)
         computer.board.add_ship(x, y)
 
-    """
-    Start the game
-    """
-
     game_over = False
     while not game_over:
-        print("\nPlayer's turn")
-        print("Player's Board:")
+        print("\n{}'s board".format(player_name))
         player.board.print()
-        print("Computer's Board:")
+        print("Computer's board:")
         computer.board.print()
-
         print("Make a guess.")
         x, y = get_valid_input()
-        result = player.board.guess(x, y)
-        print(result)
-
-        if result == "Hit":
-            if len(player.board.ships) == 0:
-                print("Congratulations! You sank all the computer's ships. You win!")
-                scores["player"] += 1
-                game_over = True
-        else:
-            print("Player missed.")
-
-        print("\nComputer's turn")
-        x = random_point(computer.board.size)
-        y = random_point(computer.board.size)
         result = computer.board.guess(x, y)
-        print("The computer guesses ({}, {}).".format(x, y))
         print(result)
 
         if result == "Hit":
             if len(computer.board.ships) == 0:
-                print("Oops! The computer sank all your ships. You lose!")
+                print("Congratulations, {}! You sank all the computer's ships. You win!".format(player_name))
+                scores["player"] += 1
+                game_over = True
+        else:
+            print("{} missed.")
+
+        print("\nComputer's turn")
+        x = random_point(player.board.size)
+        y = random_point(player.board.size)
+        result = player.board.guess(x, y)
+        print("The computer guesses ({}, {}).".format(x, y))
+        print(result)
+
+        if result == "Hit":
+            if len(player.board.ships) == 0:
+                print("Oops! The computer sank all your ships, {}. You lose!".format(player_name))
                 scores["computer"] += 1
                 game_over = True
         else:
             print("The computer missed.")
 
     print("\nGame Over!")
-    print("Player Score:", scores["player"])
+    print("\n{}'s Score:".format(player_name), scores["player"])
     print("Computer Score:", scores["computer"])
-
 
 play_game()
