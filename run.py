@@ -66,3 +66,18 @@ class Computer:
         self.board = Board()
         self.board.name = self.name
         self.board.type = "computer"
+
+def get_valid_input():
+    """
+    Validates and returns user input for coordinates
+    """
+    while True:
+        try:
+            x = int(input("Enter the row: "))
+            y = int(input("Enter the column: "))
+            if x in range(5) and y in range(5):
+                return x, y
+            else:
+                print("Invalid input! Please enter values within the range (0-4).")
+        except ValueError:
+            print("Invalid input! Please enter valid numbers for row and column.")
