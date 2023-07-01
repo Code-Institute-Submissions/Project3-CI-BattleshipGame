@@ -94,17 +94,16 @@ def play_game():
     print("Welcome to Battleship!")
     player_name = input("Please enter your name: ")
 
-    """
+    """ 
     Create player and computer objects
     """
-
     player = Player(player_name)
     computer = Computer()
 
-    """ 
+    """
     Set up player's ships
     """
-
+    
     print("\nSet up your ships.")
     for _ in range(player.board.num_ships):
         print("Enter the coordinates for ship {}".format(_ + 1))
@@ -122,9 +121,9 @@ def play_game():
         computer.board.add_ship(x, y)
 
     """
-    Starts the game 
+    Start the game
     """
-    
+
     game_over = False
     while not game_over:
         print("\nPlayer's turn")
