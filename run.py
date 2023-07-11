@@ -92,7 +92,7 @@ def play_game():
     Starts the game
     """
     print(Fore.LIGHTGREEN_EX + "Welcome to Battleship!")
-    player_name = input(Fore.MAGENTA + "Please enter your name: ")
+    player_name = input(Fore.LIGHTYELLOW_EX + "Please enter your name: ")
 
     """ 
     Create player and computer objects 
