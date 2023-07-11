@@ -1,7 +1,9 @@
 from random import randint
 from colorama import Fore
 
+
 scores = {"computer": 0, "player": 0}
+
 
 class Board:
     """
@@ -41,6 +43,7 @@ class Board:
             if self.type == "player":
                 self.board[x][y] = "$"
 
+
 def random_point(size):
     """
     Returning a random integer
@@ -72,7 +75,7 @@ class Computer:
         self.board.num_ships = 3
 
 
-def get_valid_input():
+def get_valid_input(board, guesses):
     """
     Validates and returns user input for coordinates
     """
@@ -81,11 +84,16 @@ def get_valid_input():
             x = int(input("Enter the row: "))
             y = int(input("Enter the column: "))
             if x in range(5) and y in range(5):
-                return x, y
+                if (x, y) in guesses:
+                    print(Fore.RED + "You already tried these coordinates before. Please enter new coordinates.")
+                    continue
+                else:
+                    return x, y
             else:
                 print(Fore.RED + "Invalid input! Please enter values within the range (0-4).")
         except ValueError:
             print(Fore.RED + "Invalid input! Please enter valid numbers for row and column.")
+
 
 def play_game():
     """
@@ -108,7 +116,7 @@ def play_game():
     print("\nSet up your ships, {}.".format(player_name))
     for _ in range(player.board.num_ships):
         print("Enter the coordinates for ship {}".format(_ + 1))
-        x, y = get_valid_input()
+        x, y = get_valid_input(player.board, player.board.guesses)
         player.board.add_ship(x, y)
 
     """
@@ -120,6 +128,9 @@ def play_game():
         y = random_point(computer.board.size)
         computer.board.add_ship(x, y)
 
+    player_guesses = set()
+    computer_guesses = set()
+
     game_over = False
     while not game_over:
         print("\n{}'s board".format(player_name))
@@ -127,7 +138,8 @@ def play_game():
         print("Computer's board:")
         computer.board.print()
         print("Make a guess.")
-        x, y = get_valid_input()
+        x, y = get_valid_input(player.board, player_guesses)
+        player_guesses.add((x, y))
         result = computer.board.guess(x, y)
         print(result)
 
@@ -137,11 +149,17 @@ def play_game():
                 scores["player"] += 1
                 game_over = True
         else:
-            print("{} missed.")
+            print("{} missed.".format(player_name))
 
         print("\nComputer's turn")
-        x = random_point(player.board.size)
-        y = random_point(player.board.size)
+        valid_guess = False
+        while not valid_guess:
+            x = random_point(player.board.size)
+            y = random_point(player.board.size)
+            if (x, y) not in computer_guesses:
+                valid_guess = True
+        computer_guesses.add((x, y))
+
         result = player.board.guess(x, y)
         print("The computer guesses ({}, {}).".format(x, y))
         print(result)
@@ -157,5 +175,6 @@ def play_game():
     print(Fore.RED + "\nGame Over!")
     print(Fore.MAGENTA + "\n{}'s Score:".format(player_name), scores["player"])
     print("Computer Score:", scores["computer"])
+
 
 play_game()
