@@ -81,7 +81,7 @@ def get_valid_input(board, guesses):
     """
     while True:
         try:
-            x = int(input("Enter the row: "))
+            x = int(input(Fore.LIGHTYELLOW_EX + "Enter the row: "))
             y = int(input("Enter the column: "))
             if x in range(5) and y in range(5):
                 if (x, y) in guesses:
