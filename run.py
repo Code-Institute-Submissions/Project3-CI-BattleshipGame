@@ -1,5 +1,4 @@
 from random import randint
-import colorama
 from colorama import Fore
 
 scores = {"computer": 0, "player": 0}
@@ -138,7 +137,7 @@ def play_game():
                 scores["player"] += 1
                 game_over = True
         else:
-            print(Fore.RED + "{} missed.")
+            print("{} missed.")
 
         print("\nComputer's turn")
         x = random_point(player.board.size)
