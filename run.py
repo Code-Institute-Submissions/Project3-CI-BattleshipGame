@@ -85,14 +85,17 @@ def get_valid_input(board, guesses):
             y = int(input("Enter the column: "))
             if x in range(5) and y in range(5):
                 if (x, y) in guesses:
-                    print(Fore.RED + "You already tried these coordinates before. Please enter new coordinates.")
+                    print(Fore.RED + '''You already tried these coordinates
+                    before. Please enter new coordinates.''')
                     continue
                 else:
                     return x, y
             else:
-                print(Fore.RED + "Invalid input! Please enter values within the range (0-4).")
+                print(Fore.RED + '''Invalid input! Please enter values within
+                the range (0-4).''')
         except ValueError:
-            print(Fore.RED + "Invalid input! Please enter valid numbers for row and column.")
+            print(Fore.RED + '''Invalid input!Please enter valid numbers for
+            row and column.''')
 
 
 def play_game():
@@ -102,8 +105,8 @@ def play_game():
     print(Fore.LIGHTGREEN_EX + "Welcome to Battleship!")
     player_name = input(Fore.LIGHTYELLOW_EX + "Please enter your name: ")
 
-    """ 
-    Create player and computer objects 
+    """
+    Create player and computer objects
     """
 
     player = Player(player_name)
@@ -145,7 +148,8 @@ def play_game():
 
         if result == "Hit":
             if len(computer.board.ships) == 0:
-                print(Fore.GREEN + "Congratulations, {}! You sank all the computer's ships. You win!".format(player_name))
+                print(Fore.GREEN + '''Congratulations, {}! You sank all the
+                computer's ships. You win!'''.format(player_name))
                 scores["player"] += 1
                 game_over = True
         else:
@@ -166,15 +170,18 @@ def play_game():
 
         if result == "Hit":
             if len(player.board.ships) == 0:
-                print(Fore.RED + "Oops! The computer sank all your ships, {}. You lose!".format(player_name))
+                print(Fore.RED + '''Oops! The computer sank all your
+                ships, {}. You lose!'''.format(player_name))
                 scores["computer"] += 1
                 game_over = True
+                
         else:
             print("The computer missed.")
 
     print(Fore.RED + "\nGame Over!")
     print(Fore.MAGENTA + "\n{}'s Score:".format(player_name), scores["player"])
     print("Computer Score:", scores["computer"])
+    play_game()
 
 
 play_game()
