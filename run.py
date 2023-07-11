@@ -174,7 +174,6 @@ def play_game():
                 ships, {}. You lose!'''.format(player_name))
                 scores["computer"] += 1
                 game_over = True
-                
         else:
             print("The computer missed.")
 
