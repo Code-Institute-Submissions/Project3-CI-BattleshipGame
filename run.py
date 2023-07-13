@@ -33,9 +33,7 @@ class Board:
             return "Missed"
 
     def add_ship(self, x, y, type="computer"):
-        """
-        Adding ships
-        """
+        
         if len(self.ships) >= self.num_ships:
             print(Fore.RED + "Error: You cannot add any more ships!")
         else:
@@ -103,18 +101,19 @@ def play_game():
     Starts the game
     """
     print(Fore.LIGHTGREEN_EX + "Welcome to Battleship!")
-    player_name = input(Fore.LIGHTYELLOW_EX + "Please enter your name: ")
+    while True:
+        player_name = input(Fore.LIGHTYELLOW_EX + "Please enter your name: ")
+        if len(player_name) >= 3:
+            break
+        else:
+            print(Fore.RED + "Name must be at least 3 characters long. Please try again.")
 
-    """
-    Create player and computer objects
-    """
+  
 
+  
     player = Player(player_name)
     computer = Computer()
-
-    """
-    Set up player's ships
-    """
+    
 
     print("\nSet up your ships, {}.".format(player_name))
     for _ in range(player.board.num_ships):
@@ -182,5 +181,5 @@ def play_game():
     print("Computer Score:", scores["computer"])
     play_game()
 
-
-play_game()
+if __name__ == "__main__":
+    play_game()
