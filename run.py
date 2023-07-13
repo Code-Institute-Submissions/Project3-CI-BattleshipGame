@@ -79,8 +79,10 @@ def get_valid_input(board, guesses):
     """
     while True:
         try:
-            x = int(input(Fore.LIGHTYELLOW_EX + "Enter the row: "))
-            y = int(input("Enter the column: "))
+            x = int(input(Fore.LIGHTYELLOW_EX + '''Enter the row 
+            (within the range 0-4): '''))
+            y = int(input('''Enter the column
+            (within the range 0-4): '''))
             if x in range(5) and y in range(5):
                 if (x, y) in guesses:
                     print(Fore.RED + '''You already tried these coordinates
@@ -106,7 +108,8 @@ def play_game():
         if len(player_name) >= 3:
             break
         else:
-            print(Fore.RED + "Name must be at least 3 characters long. Please try again.")
+            print(Fore.RED + '''Name must be at least 3 characters long.
+             Please try again.''')
 
   
 
