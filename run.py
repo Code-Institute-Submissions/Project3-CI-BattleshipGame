@@ -33,7 +33,6 @@ class Board:
             return "Missed"
 
     def add_ship(self, x, y, type="computer"):
-        
         if len(self.ships) >= self.num_ships:
             print(Fore.RED + "Error: You cannot add any more ships!")
         else:
@@ -79,7 +78,7 @@ def get_valid_input(board, guesses):
     """
     while True:
         try:
-            x = int(input(Fore.LIGHTYELLOW_EX + '''Enter the row 
+            x = int(input(Fore.LIGHTYELLOW_EX + '''Enter the row
             (within the range 0-4): '''))
             y = int(input('''Enter the column
             (within the range 0-4): '''))
@@ -111,12 +110,8 @@ def play_game():
             print(Fore.RED + '''Name must be at least 3 characters long.
              Please try again.''')
 
-  
-
-  
     player = Player(player_name)
     computer = Computer()
-    
 
     print("\nSet up your ships, {}.".format(player_name))
     for _ in range(player.board.num_ships):
@@ -183,6 +178,7 @@ def play_game():
     print(Fore.MAGENTA + "\n{}'s Score:".format(player_name), scores["player"])
     print("Computer Score:", scores["computer"])
     play_game()
+
 
 if __name__ == "__main__":
     play_game()
